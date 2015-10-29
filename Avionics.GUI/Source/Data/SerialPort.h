@@ -1,6 +1,10 @@
 #pragma once
 #include <Frontier.h>
-#include <Windows.h>
+#include <cstdint>
+
+#ifdef WIN32
+#include <windows.h>
+#endif
 
 class SerialPort {
 public:
@@ -11,11 +15,11 @@ public:
 
 	virtual int write(const uint8_t* buff, size_t size);
 
-	bool portIsOpen() {
-		return port_handle_ != INVALID_HANDLE_VALUE;
-	}
+	bool portIsOpen();
 
 protected:
+#ifdef WIN32
 	HANDLE port_handle_;	
+#endif
 };
 

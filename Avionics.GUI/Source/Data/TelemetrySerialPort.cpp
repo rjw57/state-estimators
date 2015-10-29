@@ -1,5 +1,9 @@
 #include "TelemetrySerialPort.h"
 
+#ifndef WIN32
+#include <unistd.h>
+#endif
+
 #define BUFFER_COUNT 1
 
 TelemetrySerialPort::TelemetrySerialPort(const char* port_name, int baud_rate) : SerialPort(port_name, baud_rate), message_buffer_index_(-1) {
@@ -16,7 +20,11 @@ void TelemetrySerialPort::sync() {
 	const char characters[4] = { 'S', 'Y','N','C'};
 	while (!poll()) {
 		write((const uint8_t*)characters, 4);
+#ifndef WIN32
+		usleep(1000);
+#else
 		Sleep(1000);
+#endif
 	}
 }
 

@@ -18,6 +18,10 @@ endforeach()
 
 add_library(Avionics ${HEADERS} ${SOURCES} ${CMAKELISTS})
 
+# Tell CMake which standards we target
+set_property(TARGET Avionics PROPERTY C_STANDARD 99)
+set_property(TARGET Avionics PROPERTY CXX_STANDARD 14)
+
 SET (AVIONICS_INCLUDES 
     ${CMAKE_CURRENT_SOURCE_DIR}/Source
 )

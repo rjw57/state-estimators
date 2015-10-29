@@ -2,7 +2,7 @@
 #define TIME_UTILS_H
 #include <stdint.h>
 
-#ifdef WIN32
+#if defined(WIN32) || defined(LINUX)
 // The base clock frequency of the chip - not sure if this a decent approximation of halGetCounterFrequency
 // However, it is consistent with the data having an update rate of 1kHz
 #define CLOCK_FREQUENCY 168000000.0f

@@ -1,5 +1,6 @@
 #include "SerialPort.h"
 #include <Util/FTStringUtils.h>
+#include <Windows.h>
 
 SerialPort::SerialPort(const char* port_name, int baud_rate) {
 	char port_settings_string[40];
@@ -44,6 +45,9 @@ SerialPort::SerialPort(const char* port_name, int baud_rate) {
 	}
 }
 
+bool SerialPort::portIsOpen() {
+	return port_handle_ != INVALID_HANDLE_VALUE;
+}
 
 SerialPort::~SerialPort() {
 	if (port_handle_ != INVALID_HANDLE_VALUE)

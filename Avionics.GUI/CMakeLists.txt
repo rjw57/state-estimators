@@ -1,5 +1,10 @@
 add_definitions(-DGLEW_STATIC)
 
+# GUIs are sort of inherently non-portable :(
+if(CMAKE_SYSTEM_NAME STREQUAL "Linux")
+  add_definitions(-DLINUX)
+endif(CMAKE_SYSTEM_NAME STREQUAL "Linux")
+
 add_subdirectory(Source)
 
 # We can use GLOB here as in order for a CMakeList to be used a pre-existing one
@@ -17,6 +22,13 @@ foreach(FILE ${SOURCES} ${HEADERS} ${CMAKELISTS})
 endforeach()
 
 add_library(Avionics.GUI ${HEADERS} ${SOURCES} ${CMAKELISTS})
+TARGET_LINK_LIBRARIES(Avionics.GUI
+    Avionics
+)
+
+# Tell CMake which standards we target
+set_property(TARGET Avionics.GUI PROPERTY C_STANDARD 99)
+set_property(TARGET Avionics.GUI PROPERTY CXX_STANDARD 14)
 
 target_include_directories ( Avionics.GUI PUBLIC
     ${CMAKE_CURRENT_SOURCE_DIR}/Source
@@ -30,7 +42,11 @@ TARGET_LINK_LIBRARIES(Avionics.GUI.Launcher
     Avionics
     Avionics.GUI
 	${FRONTIER_ENGINE_LIBS}
+    -lXxf86vm -lpthread -lXrandr -lXcursor -lXinerama -lXi
 )
+
+set_property(TARGET Avionics.GUI.Launcher PROPERTY C_STANDARD 99)
+set_property(TARGET Avionics.GUI.Launcher PROPERTY CXX_STANDARD 14)
 
 add_custom_command(TARGET Avionics.GUI.Launcher POST_BUILD
                    COMMAND ${CMAKE_COMMAND} -E copy_directory

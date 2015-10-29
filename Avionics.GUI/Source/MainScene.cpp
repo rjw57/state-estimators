@@ -10,7 +10,7 @@ extern "C" {
 }
 
 #define RUN_SIMULATION // Whether to run the estimators locally or render the on board values (not implemented yet)
-#define SERIAL_DATA_SOURCE // Whether to read from a file or COM port
+//#define SERIAL_DATA_SOURCE // Whether to read from a file or COM port
 
 MainScene::MainScene() : data_source_(nullptr), time_left_after_ticks_(0) {
 	state_3d_renderer_ = std::make_shared<State3DRenderer>();
@@ -25,7 +25,7 @@ MainScene::MainScene() : data_source_(nullptr), time_left_after_ticks_(0) {
 #ifdef SERIAL_DATA_SOURCE
 	data_source_ = std::make_unique<SerialDataSource>("\\\\.\\COM3", 38400);
 #else
-	data_source_ = std::make_unique<FileDataSource>("log_00021.bin");
+	data_source_ = std::make_unique<FileDataSource>("Resources/log_00021.bin");
 #endif
     FTEngine::getEventManager()->registerDelegate<FTEngineEventDispatcher>(this, &MainScene::update);
 #endif
